@@ -1,15 +1,32 @@
 body
 {
-	background-color: DarkSlateGrey;
-	text-align: center;
+	background-color: DarkSlateGrey; /*changing the background of the webpage to DarkSlateGrey*/
+	text-align: center; /*aligning texts and other objects to the center of the page*/
 }
 
 #stage
 {
 	margin-left: auto;
-	margin-right: auto;
-	width: 1000px;
-	height: 800px;
-	background-color: black;
+	margin-right: auto; 
+	width: 1000px;/*setting the wideth of the canvas*/
+	height: 800px;/*setting the height of the canvas*/
+	background-color: black; /*setting the background of the canvas to black*/
 	
+}
+
+#left 
+{
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 460px;
+	height: 800px;
+}
+#right
+{
+	position: fixed;
+	right: 0px;
+	top: 0px;
+	width: 460px;
+	height: 800px;
 }
