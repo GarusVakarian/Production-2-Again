@@ -21,6 +21,7 @@ body
 	top: 0px;
 	width: 460px;
 	height: 800px;
+	/* changing the position of the images to so that it fits on the left side of the page*/
 }
 #right
 {
@@ -29,4 +30,5 @@ body
 	top: 0px;
 	width: 460px;
 	height: 800px;
+	/* changing the position of the image so that it fits on the right side of the page*/
 }
