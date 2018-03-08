@@ -6,18 +6,29 @@ context.canvas.width = 800;//width of the canvas
 var context, controller, player, loop, jumpSFX;// creating variables to represent the player, the main loop and a controller for the player.
 //jumpSFX = document.getElementById ("jump");
 var score = 0;
+var uInt;
+var level;
+var scrollSpeed = 4;
+const ROWS = 6
+const COLS = 10;
+var images = [];
+var imgStr = ["water", "ground", "enemy", "player"];
+var enemiesArray = [];
+var gapMoveChance = 66;
 
-player = {
 
-  height:32,//height of the player
-  jumping:true,//making sure that when the player spawns they are NOT jumping
-  width:32,//width of the player 
-  x:5, // set the starting x position of the player 
-  x_velocity:0,// setting the intimal velocity for the player
-  y:500,//setting the initial y position of the player 
-  y_velocity:0//setting the initial downward velocity of the player  
 
-};
+//player = {
+
+ // height:32,//height of the player
+  //jumping:true,//making sure that when the player spawns they are NOT jumping
+ // width:32,//width of the player 
+ // x:5, // set the starting x position of the player 
+ // x_velocity:0,// setting the intimal velocity for the player
+ // y:500,//setting the initial y position of the player 
+ // y_velocity:0//setting the initial downward velocity of the player  
+
+//};
 
 controller = {
 
@@ -47,12 +58,66 @@ controller = {
 
 };
 
-//function update()
-//{
+createLevel();
+
+
+function update()
+{
+	scrollLevel();
 	//score++;
 	//console.log(score);
-//}
+}
 
+function createLevel()
+{
+	for (var i = 0; i < 4; i++)
+	{
+		images[i] = new Image();
+		images[i].src = "../img/"+imgStr[i]+".png";
+	}
+	level = [];
+
+	for (var row = 0; row < ROWS; row++)
+	{
+		level[row] = [];
+		for ( col = 0; col < COLS; col++)
+		{
+			var tile = {};
+			tile.x = col*64;
+			tile.y = row*64;
+			tile.img = images[0];
+			level[row][col] = tile;
+		}
+	}
+	player.img = images[3];
+	uInt = setInterval(update, 33.34);
+}
+
+function scrollLevel()
+{
+	for (var row = 0; row < ROWS; row++)
+	{
+		for (col = 0; col < COLS; col++)
+		{
+			level[row][col].x -= scrollSpeed;
+		}
+	}
+	if (level[0][0].x <= 64)
+	{
+		for (var row = 0; row < ROWS; row++)
+		{
+			if (enemiesArray.indexOf(level[row][0]) == 0)
+				enemiesArray.shift();
+			console.log(enemiesArray.length);
+			level[row].shift();
+			var tile = {};
+			tile.x = (COLS - 1)*64;
+			tile.y = rows*64;
+			setTileType(tile, row);
+			level[row].push(tile);
+		}
+	}
+}
 loop = function() {//main game loop
 
 	
@@ -107,13 +172,13 @@ loop = function() {//main game loop
 	 // jumpSFX.play();
   //}
 
-  context.fillStyle = "#00ced1";//setting color for the background canvas 
-  context.fillRect(0, 0, 800, 600);// x, y, width, height of the background which is in-turn the canvas
+ // context.fillStyle = "#00ced1";//setting color for the background canvas 
+ // context.fillRect(0, 0, 800, 600);// x, y, width, height of the background which is in-turn the canvas
  
-  context.fillStyle = "#a52a2a";// setting color for the player
-  context.beginPath();
-  context.rect(player.x, player.y, player.width, player.height);
-  context.fill();
+//  context.fillStyle = "#a52a2a";// setting color for the player
+//  context.beginPath();
+ // context.rect(player.x, player.y, player.width, player.height);
+ // context.fill();
   
   context.strokeStyle = "#202830";//this is the floor color 
   context.lineWidth = 4;//this is the width of the floor
@@ -122,14 +187,13 @@ loop = function() {//main game loop
   context.lineTo(1000,534);//this is the final x and y coordinate for the floor 
   context.stroke();//this is to ACTUALLY draw the line 
 	
-	score++;//incrementing the score by one 
-	context.font = "30px Arial";//setting the font for the entire game
-	context.fillText ("Score: "+ score, 10, 50); //displaying the score
+  score++;//incrementing the score by one 
+  context.font = "30px Arial";//setting the font for the entire game
+  context.fillText ("Score: "+ score, 10, 50); //displaying the score
 
   
   
   window.requestAnimationFrame(loop);// call update when the browser is ready to draw again
-
 };
 
 window.addEventListener("keydown", controller.keyListener)
